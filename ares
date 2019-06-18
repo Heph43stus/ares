@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+# coding=utf-8
+
+"""
+Copyright (c) 2019 ares developers (http://github.com/clownsonyou/ares)
+See the file 'LICENSE' for copying permission
+"""
+
+
+from fancycmd.data_types import *
+import os
+
+
+from core.shell import Shell
+from utils.log import Log
+
+
+class Ares(Shell):
+    def __init__(self):
+        Shell.__init__(self)
+        self.update_prompt("~")
+        
+        self.abspath = os.path.dirname(os.path.abspath(__file__))
+        self.modules = {}
+        self.module_names = []
+        self.log = Log(self.profile)
+        self.module = None
+
+    def update_prompt(self, module):
+        if module == "~":
+            self.prompt = "{} > ".format(Str("ares").yellow())
+        else:
+            nodes = module.split("/")
+            t = nodes[0]
+            nodes.pop(0)
+            self.prompt = "{} {}({}) > ".format(Str("ares").yellow(), t, Str("/".join(nodes)).green())
+
+
+if __name__ == '__main__':
+    Ares().mainloop()
